@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.7] - 2026-05-05
+
+Manual SDK release
+
 ## [0.0.6] - 2026-04-30
 
 Re-release of 0.0.6 with semver-formatted public tag so SwiftPM can resolve it.
