@@ -19,20 +19,12 @@ class ViewController: UIViewController {
     // MARK: - UIButton Actions
     @IBAction func btnGetStartedTapped(_ sender: Any) {
         /// Vrtx initialization
-        Vrtx.shared.initialize(environment: .staging,
-                               clientID: "ANBSARI_sandbox_sdk",
-                               clientSecret: "ybjHK4Xqk88ZFrWatolxygUgCoz7aRSe",
-                               theme: VrtxTheme(
-                                primaryColor: .black,
-                                backgroundColor: .white,
-                                secondaryBackgroundColor: .hex("#F2F2F7"),
-                                textColor: .black,
-                                fieldBackground: .systemGray6,
-                                secondaryTextColor: .hex("#3C3C43").withAlphaComponent(0.6),
-                                secondaryButtonColor: .systemGray5
-                               ),
-                               language: .english,
-                               completion: {
+        Vrtx.setup(environment: .staging,
+                   clientID: "YOUR_CLIENT_ID",
+                   clientSecret: "YOUR_CLIENT_SECRET",
+                   mode: .light,
+                   language: .english,
+                   completion: {
             configured in
             guard configured else {
                 return
