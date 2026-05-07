@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.8] - 2026-05-07
+
+Manual SDK release
+
 ## [0.0.7] - 2026-05-05
 
 Manual SDK release
