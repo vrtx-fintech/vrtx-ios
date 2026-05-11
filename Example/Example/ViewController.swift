@@ -19,32 +19,30 @@ class ViewController: UIViewController {
     // MARK: - UIButton Actions
     @IBAction func btnGetStartedTapped(_ sender: Any) {
         /// Vrtx initialization
-        Vrtx.setup(environment: .staging,
+        Vrtx.setup(environment: .sandbox,
                    clientID: "YOUR_CLIENT_ID",
                    clientSecret: "YOUR_CLIENT_SECRET",
                    mode: .light,
                    language: .english,
-                   completion: {
-            configured in
-            guard configured else {
+                   from: self,
+                   completion: { error, started in
+            guard started else {
                 return
             }
             
-            Vrtx.launch(from: self, completion: {
-                _, onError, _ in
-                if !onError.isEmpty {
-                    VrtxAlert.present(
-                        from: self,
-                        config: .init(
-                            message: onError,
-                            primaryAction: .init(
-                                title: "OK",
-                                style: .primary
-                            ) {}
-                        )
+            /// error state
+            if !error.isEmpty {
+                VrtxAlert.present(
+                    from: self,
+                    config: .init(
+                        message: error,
+                        primaryAction: .init(
+                            title: "OK",
+                            style: .primary
+                        ) {}
                     )
-                }
-            })
+                )
+            }
         })
     }
 }
