@@ -1,0 +1,63 @@
+name: Build Example App
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: example-build-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PROJECT: Example/Example.xcodeproj
+  SCHEME: Example
+  # Generic Simulator destination — independent of which concrete iPhone
+  # runtime ships on the runner image.
+  IOS_SIMULATOR: generic/platform=iOS Simulator
+
+jobs:
+  build:
+    name: Build (iOS Simulator)
+    runs-on: macos-15
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Set up Xcode (latest stable)
+        uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
+        with:
+          xcode-version: latest-stable
+
+      - name: Restore SPM cache
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: |
+            .derivedData
+            ~/Library/Caches/org.swift.swiftpm
+            ~/.swiftpm
+          key: ${{ runner.os }}-xcode-${{ hashFiles('**/*.xcodeproj/project.pbxproj') }}-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-xcode-
+
+      - name: Build Example for iOS Simulator
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project "${PROJECT}" \
+            -scheme "${SCHEME}" \
+            -configuration Debug \
+            -destination "${IOS_SIMULATOR}" \
+            -derivedDataPath .derivedData \
+            -skipPackagePluginValidation \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO

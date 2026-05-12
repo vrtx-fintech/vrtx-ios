@@ -2,4 +2,7 @@
 .build/
 .swiftpm/
 Package.resolved
-*.xcodeproj
+xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
