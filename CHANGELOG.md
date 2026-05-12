@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.12] - 2026-05-12
+
+split Vrtx.setup completion into onSuccess/onError 
+
 ## [0.0.11] - 2026-05-12
 
 Manual SDK release
