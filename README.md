@@ -47,7 +47,7 @@ Vrtx.setup(
     language: .english,
     fontFamily: "Inter", // omit to use the SDK default per language
     onSuccess: { /* SDK UI launched */ },
-    onError: { error in /* error.status, error.message — surface to the user */ }
+    onError: { error in /* error.status, error.message */ }
 )
 ```
 
