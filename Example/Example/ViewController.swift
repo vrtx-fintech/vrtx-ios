@@ -25,14 +25,17 @@ class ViewController: UIViewController {
                    mode: .light,
                    language: .english,
                    fontFamily: "Inter",
-                   completion: { onError, started in
-            guard started else {
-                return
-            }
-            
-            if !onError.isEmpty {
-                /// error state
-            }
+                   onSuccess: {
+            // SDK UI launched
+        },
+                   onError: { [weak self] error in
+            let alert = UIAlertController(
+                title: "Error \(error.status)",
+                message: error.message,
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self?.present(alert, animated: true)
         })
     }
 }
