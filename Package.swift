@@ -10,8 +10,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "VRTX",
-            url: "https://github.com/vrtx-fintech/vrtx-ios/releases/download/0.0.9/VRTX.xcframework.zip",
-            checksum: "4a6c2b20d5cde7305a0e722c4dca36bd6dc79d7ce53eca01f5a3909e785b20a3"
+            url: "https://github.com/vrtx-fintech/vrtx-ios/releases/download/0.0.10/VRTX.xcframework.zip",
+            checksum: "e5138f35dec9e33138a13fa6620cb89a038266b030f8284fdc4ad9b37e81cef7"
         )
     ]
 )
