@@ -5,7 +5,7 @@ The official iOS SDK for Vrtx — onboarding, wallet, and card flows for your ap
 ## Requirements
 
 - iOS 15.6+
-- Xcode 15+
+- Xcode 16+
 - Swift 5.9+
 
 ## Installation
@@ -20,7 +20,7 @@ The official iOS SDK for Vrtx — onboarding, wallet, and card flows for your ap
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.0.1")
+    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.0.11")
 ],
 targets: [
     .target(
@@ -32,68 +32,40 @@ targets: [
 
 ## Quickstart
 
-### 1. Configure
-
-Call `configure` once at app launch — typically from your `AppDelegate` or
-`@main` `App` struct. Credentials and the license key are issued by Vrtx.
+Call `Vrtx.setup` from the view controller that triggers the flow.
+The SDK presents itself and reports back via the completion handler;
+`started` is `true` once the flow is on screen.
 
 ```swift
 import VRTX
 
-Vrtx.shared.configure(
+Vrtx.setup(
     environment: .sandbox,
-    grantType: "client_credentials",
     clientID: "YOUR_CLIENT_ID",
     clientSecret: "YOUR_CLIENT_SECRET",
-    scope: "YOUR_SCOPE",
-    theme: .default,
+    mode: .light,
     language: .english,
-    licenseKey: "YOUR_LICENSE_KEY"
-) { success in
-    print("VRTX configured: \(success)")
+    fontFamily: "Inter"
+) { onError, started in
+    guard started else { return }
+    if !onError.isEmpty {
+        // handle setup error
+    }
 }
 ```
 
-### 2. Start the flow
+## Appearance
 
-Present the SDK from any view controller. The SDK handles onboarding or
-sign-in automatically based on the user's saved state.
+`Vrtx.setup` accepts:
 
-```swift
-Vrtx.start(from: self) { started in
-    // SDK is now active
-}
-```
-
-### 3. Sign out
-
-```swift
-Vrtx.logout(from: self)
-```
-
-## Theming
-
-Pass a `VrtxTheme` to `configure` to match your brand:
-
-```swift
-let theme = VrtxTheme(
-    primaryColor: .systemBlue,
-    secondaryColor: .systemGray
-    // …
-)
-```
+- `mode: .light` or `.dark` to match your app's appearance.
+- `fontFamily:` — pass the PostScript family name of a font already embedded
+  in your app (e.g. `"Inter"`).
 
 ## Localization
 
-Supported languages: English and Arabic. Set the language at configure time:
-
-```swift
-Vrtx.shared.configure(
-    // …
-    language: .arabic
-    // …
-)
-```
+Supported languages: English and Arabic. Pass `language: .english` or
+`language: .arabic` when calling `Vrtx.setup`.
 
 ## Support
 
