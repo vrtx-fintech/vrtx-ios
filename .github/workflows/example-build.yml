@@ -38,16 +38,20 @@ jobs:
         with:
           xcode-version: latest-stable
 
+      # Cache the SPM package store only — NOT .derivedData. Restoring
+      # .derivedData from a previous run carries over already-linked
+      # binaries from older package versions, and Xcode happily reuses
+      # them instead of re-resolving against the new pbxproj/Package.swift.
+      # No `restore-keys` so a partial match can't pull in a stale
+      # resolution either — better to re-download the xcframework than
+      # silently build against the wrong version.
       - name: Restore SPM cache
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: |
-            .derivedData
             ~/Library/Caches/org.swift.swiftpm
             ~/.swiftpm
-          key: ${{ runner.os }}-xcode-${{ hashFiles('**/*.xcodeproj/project.pbxproj') }}-${{ hashFiles('**/Package.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-xcode-
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/*.xcodeproj/project.pbxproj', 'Package.swift', '**/Package.resolved') }}
 
       - name: Build Example for iOS Simulator
         run: |
