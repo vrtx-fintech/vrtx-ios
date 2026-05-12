@@ -16,9 +16,12 @@ class ViewController: UIViewController {
     }
     
     @IBAction func btnGetStartedTapped(_ sender: Any) {
+        let clientID = Bundle.main.object(forInfoDictionaryKey: "VrtxClientID") as? String ?? ""
+        let clientSecret = Bundle.main.object(forInfoDictionaryKey: "VrtxClientSecret") as? String ?? ""
+
         Vrtx.setup(environment: .sandbox,
-                   clientID: "VRTX_CLIENT_ID",
-                   clientSecret: "VRTX_CLIENT_SECRET",
+                   clientID: clientID,
+                   clientSecret: clientSecret,
                    mode: .light,
                    language: .english,
                    fontFamily: "Inter",
