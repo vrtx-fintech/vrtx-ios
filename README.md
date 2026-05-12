@@ -20,7 +20,7 @@ The official iOS SDK for Vrtx — onboarding, wallet, and card flows for your ap
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.0.11")
+    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.0.12")
 ],
 targets: [
     .target(
@@ -45,13 +45,10 @@ Vrtx.setup(
     clientSecret: "YOUR_CLIENT_SECRET",
     mode: .light,
     language: .english,
-    fontFamily: "Inter"
-) { onError, started in
-    guard started else { return }
-    if !onError.isEmpty {
-        // handle setup error
-    }
-}
+    fontFamily: "Inter", // omit to use the SDK default per language
+    onSuccess: { /* SDK UI launched */ },
+    onError: { error in /* error.status, error.message */ }
+)
 ```
 
 ## Appearance
