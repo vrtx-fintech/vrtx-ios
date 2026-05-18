@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.13] - 2026-05-18
+
+replace home cell nibs with code layouts 
+
 ## [0.0.12] - 2026-05-12
 
 split Vrtx.setup completion into onSuccess/onError 
