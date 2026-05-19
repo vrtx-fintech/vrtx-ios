@@ -51,18 +51,17 @@ Vrtx.setup(
 )
 ```
 
-## Appearance
+## Contract
 
-`Vrtx.setup` accepts:
+`Vrtx.setup` accepts these public configuration enums:
 
-- `mode: .light` or `.dark` to match your app's appearance.
-- `fontFamily:` — pass the PostScript family name of a font already embedded
-  in your app (e.g. `"Inter"`).
+| Parameter | Enum | Values |
+| --------- | ---- | ------ |
+| `environment` | `VrtxEnvironment` | `.sandbox`, `.staging` |
+| `language` | `VrtxLanguage` | `.english`, `.arabic` |
+| `mode` | `VrtxThemeMode` | `.light`, `.dark` |
 
-## Localization
-
-Supported languages: English and Arabic. Pass `language: .english` or
-`language: .arabic` when calling `Vrtx.setup`.
+For appearance, pass `mode` and a `fontFamily` string matching a font family already embedded and registered in your app, such as `"Inter"`.
 
 ## Support
 
