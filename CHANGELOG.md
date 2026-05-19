@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.14] - 2026-05-19
+
+reduce SDK package size and consolidate shared UI
+
 ## [0.0.13] - 2026-05-18
 
 replace home cell nibs with code layouts 
