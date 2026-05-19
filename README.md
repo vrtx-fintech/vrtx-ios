@@ -57,7 +57,7 @@ Vrtx.setup(
 
 | Parameter | Enum | Values |
 | --------- | ---- | ------ |
-| `environment` | `VrtxEnvironment` | `.sandbox`, `.staging`, `.production` |
+| `environment` | `VrtxEnvironment` | `.sandbox`, `.staging` |
 | `language` | `VrtxLanguage` | `.english`, `.arabic` |
 | `mode` | `VrtxThemeMode` | `.light`, `.dark` |
 
