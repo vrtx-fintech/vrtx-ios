@@ -19,11 +19,11 @@ class ViewController: UIViewController {
         let clientID = Bundle.main.object(forInfoDictionaryKey: "VrtxClientID") as? String ?? ""
         let clientSecret = Bundle.main.object(forInfoDictionaryKey: "VrtxClientSecret") as? String ?? ""
 
-        Vrtx.setup(environment: .sandbox,
+        Vrtx.setup(environment: Environment.sandbox,
                    clientID: clientID,
                    clientSecret: clientSecret,
-                   mode: .light,
-                   language: .english,
+                   mode: Mode.light,
+                   language: Language.english,
                    fontFamily: "Inter",
                    onSuccess: {
                     // SDK UI launched
@@ -39,4 +39,3 @@ class ViewController: UIViewController {
                    })
     }
 }
-
