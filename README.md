@@ -20,7 +20,7 @@ The official iOS SDK for Vrtx — onboarding, wallet, and card flows for your ap
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.0.12")
+    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.0.15")
 ],
 targets: [
     .target(
@@ -57,9 +57,9 @@ Vrtx.setup(
 
 | Parameter | Enum | Values |
 | --------- | ---- | ------ |
-| `environment` | `VrtxEnvironment` | `.sandbox`, `.staging` |
-| `language` | `VrtxLanguage` | `.english`, `.arabic` |
-| `mode` | `VrtxThemeMode` | `.light`, `.dark` |
+| `environment` | `Environment` | `.sandbox`, `.staging` |
+| `language` | `Language` | `.english`, `.arabic` |
+| `mode` | `Mode` | `.light`, `.dark` |
 
 For appearance, pass `mode` and a `fontFamily` string matching a font family already embedded and registered in your app, such as `"Inter"`.
 
