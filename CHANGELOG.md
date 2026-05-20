@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.15] - 2026-05-20
+
+simplify public API and rename core types
+
 ## [0.0.14] - 2026-05-19
 
 reduce SDK package size and consolidate shared UI
