@@ -1,0 +1,40 @@
+name: Release
+
+# Release notes & changelog are automated by default; manual notes stay available via
+# notes_mode. A maintainer cuts the SDK release as before (build VRTX.xcframework, attach
+# it, publish the GitHub Release with the version tag). Publishing that release triggers
+# this workflow to fill in the notes from Jira, update CHANGELOG.md, and post to Slack.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version, e.g. 0.0.16 (no 'v' prefix — matches this repo's tags)"
+        required: true
+      notes_mode:
+        description: "How to produce notes"
+        type: choice
+        options: [auto, manual]
+        default: auto
+      manual_notes:
+        description: "Notes (used only when notes_mode = manual)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  release-notes:
+    # Centralised engine — see github.com/vrtx-fintech/vrtx-release-tools.
+    uses: vrtx-fintech/vrtx-release-tools/.github/workflows/release-notes.yml@v1
+    permissions:
+      contents: write
+    with:
+      # This repo tags without a "v" prefix (e.g. 0.0.16), so version == tag.
+      version: ${{ github.event.release.tag_name || inputs.version }}
+      release_tag: ${{ github.event.release.tag_name || inputs.version }}
+      notes_mode: ${{ inputs.notes_mode || 'auto' }}
+      manual_notes: ${{ inputs.manual_notes || '' }}
+    secrets: inherit
