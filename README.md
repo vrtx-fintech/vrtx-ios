@@ -10,6 +10,12 @@ The official iOS SDK for Vrtx — onboarding, wallet, and card flows for your ap
 
 ## Installation
 
+### CocoaPods
+
+```ruby
+pod 'VRTX', '~> 0.0.15'
+```
+
 ### Xcode
 
 1. **File → Add Package Dependencies…**
