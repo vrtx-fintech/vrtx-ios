@@ -25,6 +25,7 @@ class ViewController: UIViewController {
                    mode: Mode.light,
                    language: Language.english,
                    fontFamily: "Inter",
+                   externalReference: UUID().uuidString,
                    onSuccess: {
                     // SDK UI launched
                    },

@@ -20,7 +20,7 @@ The official iOS SDK for Vrtx — onboarding, wallet, and card flows for your ap
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.0.15")
+    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.0.16")
 ],
 targets: [
     .target(
@@ -29,6 +29,20 @@ targets: [
     )
 ]
 ```
+
+### CocoaPods
+
+Add VRTX to your `Podfile`:
+
+```ruby
+platform :ios, '15.6'
+
+target 'YourApp' do
+  pod 'VRTX', '0.0.16'
+end
+```
+
+Then run `pod install` and open the generated `.xcworkspace`.
 
 ## Quickstart
 
@@ -46,6 +60,7 @@ Vrtx.setup(
     mode: .light,
     language: .english,
     fontFamily: "Inter", // omit to use the SDK default per language
+    externalReference: "YOUR_EXTERNAL_REFERENCE", // omit when no external reference is needed
     onSuccess: { /* SDK UI launched */ },
     onError: { error in /* error.status, error.message */ }
 )
@@ -53,15 +68,18 @@ Vrtx.setup(
 
 ## Contract
 
-`Vrtx.setup` accepts these public configuration enums:
+`Vrtx.setup` accepts these public configuration values:
 
-| Parameter | Enum | Values |
+| Parameter | Type | Values |
 | --------- | ---- | ------ |
 | `environment` | `Environment` | `.sandbox`, `.staging` |
 | `language` | `Language` | `.english`, `.arabic` |
 | `mode` | `Mode` | `.light`, `.dark` |
+| `externalReference` | `String` | Omit when no external reference is needed |
 
 For appearance, pass `mode` and a `fontFamily` string matching a font family already embedded and registered in your app, such as `"Inter"`.
+
+Pass `externalReference` as a string when your app needs to attach its own reference to the SDK session. Omit it when no external reference is needed.
 
 ## Support
 
