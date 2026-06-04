@@ -24,7 +24,7 @@ class ViewController: UIViewController {
                    clientSecret: clientSecret,
                    mode: Mode.light,
                    language: Language.english,
-                   fontFamily: "Inter",
+                   externalReference: UUID().uuidString, fontFamily: "Inter",
                    onSuccess: {
                     // SDK UI launched
                    },
