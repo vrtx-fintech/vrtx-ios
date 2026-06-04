@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.16] - 2026-06-04
+
+add optional externalReference to onboarding setup
+
 ## [0.0.15] - 2026-05-20
 
 simplify public API and rename core types
