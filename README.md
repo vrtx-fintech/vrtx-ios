@@ -59,8 +59,8 @@ Vrtx.setup(
     clientSecret: "YOUR_CLIENT_SECRET",
     mode: .light,
     language: .english,
-    externalReference: "YOUR_EXTERNAL_REFERENCE", // omit when no external reference is needed
-    fontFamily: "Inter", // omit to use the SDK default per language
+    externalReference: "YOUR_EXTERNAL_REFERENCE",
+    fontFamily: "Inter",
     onSuccess: { /* SDK UI launched */ },
     onError: { error in /* error.status, error.message */ }
 )
