@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.1] - 2026-07-20
+
+derive card type from backend config
+
 ## [0.1.0] - 2026-07-19
 
 Release MVC Requirement 3.1 / 3.8
