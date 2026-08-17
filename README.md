@@ -20,15 +20,28 @@ The official iOS SDK for Vrtx — onboarding, wallet, and card flows for your ap
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.1.1")
+    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.1.2"),
+    .package(url: "https://github.com/devicekit/DeviceKit", exact: "5.7.0"),
+    .package(url: "https://github.com/talsec/Free-RASP-iOS", exact: "6.14.5")
 ],
 targets: [
     .target(
         name: "YourApp",
-        dependencies: [.product(name: "VRTX", package: "vrtx-ios")]
+        dependencies: [
+            .product(name: "VRTX", package: "vrtx-ios"),
+            .product(name: "DeviceKit", package: "DeviceKit"),
+            .product(name: "TalsecRuntime", package: "Free-RASP-iOS")
+        ]
     )
 ]
 ```
+
+### Security runtime dependencies
+
+`VRTX` 0.1.2 includes runtime integrity protection powered by Talsec. Because
+`VRTX` is distributed as an XCFramework, Swift Package Manager does not expose
+its module dependencies transitively; the SwiftPM example above includes the
+required packages and products.
 
 ### CocoaPods
 
@@ -38,7 +51,7 @@ Add VRTX to your `Podfile`:
 platform :ios, '15.6'
 
 target 'YourApp' do
-  pod 'VRTX', '0.1.1'
+  pod 'VRTX', '0.1.2'
 end
 ```
 

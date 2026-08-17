@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A1EC000000000000000000D1 /* DeviceKit in Frameworks */ = {isa = PBXBuildFile; productRef = A1EC000000000000000000D2 /* DeviceKit */; };
+		A1EC000000000000000000E1 /* TalsecRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = A1EC000000000000000000E2 /* TalsecRuntime */; };
 		49B085C42FB349B300786686 /* VRTX in Frameworks */ = {isa = PBXBuildFile; productRef = 49B085C32FB349B300786686 /* VRTX */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +42,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1EC000000000000000000D1 /* DeviceKit in Frameworks */,
+				A1EC000000000000000000E1 /* TalsecRuntime in Frameworks */,
 				49B085C42FB349B300786686 /* VRTX in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +88,8 @@
 			name = Example;
 			packageProductDependencies = (
 				49B085C32FB349B300786686 /* VRTX */,
+				A1EC000000000000000000D2 /* DeviceKit */,
+				A1EC000000000000000000E2 /* TalsecRuntime */,
 			);
 			productName = Example;
 			productReference = 49B085AA2FB3494800786686 /* Example.app */;
@@ -115,6 +121,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				49B085C22FB349B300786686 /* XCRemoteSwiftPackageReference "vrtx-ios" */,
+				A1EC000000000000000000D3 /* XCRemoteSwiftPackageReference "DeviceKit" */,
+				A1EC000000000000000000E4 /* XCRemoteSwiftPackageReference "Free-RASP-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 49B085AB2FB3494800786686 /* Products */;
@@ -364,17 +372,43 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A1EC000000000000000000D3 /* XCRemoteSwiftPackageReference "DeviceKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devicekit/DeviceKit";
+			requirement = {
+				kind = exactVersion;
+				version = 5.7.0;
+			};
+		};
+		A1EC000000000000000000E4 /* XCRemoteSwiftPackageReference "Free-RASP-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/talsec/Free-RASP-iOS";
+			requirement = {
+				kind = exactVersion;
+				version = 6.14.5;
+			};
+		};
 		49B085C22FB349B300786686 /* XCRemoteSwiftPackageReference "vrtx-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/vrtx-fintech/vrtx-ios";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.1;
+				minimumVersion = 0.1.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A1EC000000000000000000D2 /* DeviceKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1EC000000000000000000D3 /* XCRemoteSwiftPackageReference "DeviceKit" */;
+			productName = DeviceKit;
+		};
+		A1EC000000000000000000E2 /* TalsecRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1EC000000000000000000E4 /* XCRemoteSwiftPackageReference "Free-RASP-iOS" */;
+			productName = TalsecRuntime;
+		};
 		49B085C32FB349B300786686 /* VRTX */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 49B085C22FB349B300786686 /* XCRemoteSwiftPackageReference "vrtx-ios" */;
