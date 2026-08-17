@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.2] - 2026-08-17
+
+release - 2026-08-17
+
 ## [0.1.1] - 2026-07-20
 
 derive card type from backend config
