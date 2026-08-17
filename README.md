@@ -85,7 +85,7 @@ Vrtx.setup(
 
 | Parameter | Type | Values |
 | --------- | ---- | ------ |
-| `environment` | `Environment` | `.sandbox`, `.staging` |
+| `environment` | `Environment` | `.sandbox`, `.production` |
 | `language` | `Language` | `.english`, `.arabic` |
 | `mode` | `Mode` | `.light`, `.dark` |
 | `externalReference` | `String` | Omit when no external reference is needed |
