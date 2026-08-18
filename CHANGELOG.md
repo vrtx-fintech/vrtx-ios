@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.5] - 2026-08-18
+
+Removes a third-party module from the SDK's public interface, so integrations no longer need to supply it and are no longer tied to a specific Xcode version.
+
 ## [0.1.4] - 2026-08-18
 
 Improves connection reliability in production environments.
