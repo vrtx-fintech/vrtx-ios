@@ -38,10 +38,19 @@ targets: [
 
 ### Security runtime dependencies
 
-`VRTX` 0.1.2 includes runtime integrity protection powered by Talsec. Because
-`VRTX` is distributed as an XCFramework, Swift Package Manager does not expose
-its module dependencies transitively; the SwiftPM example above includes the
-required packages and products.
+`VRTX` includes runtime integrity protection powered by Talsec freeRASP.
+`VRTX.framework` links `TalsecRuntime` dynamically and exposes both
+`TalsecRuntime` and `DeviceKit` in its public Swift interface, so both must be
+resolvable in your project.
+
+Because `VRTX` ships as an XCFramework, **Swift Package Manager cannot express
+these dependencies transitively** — a binary target has no dependency list. The
+SwiftPM snippet above therefore declares them explicitly, and you must keep the
+pinned versions as shown: `DeviceKit` `5.7.0` and `Free-RASP-iOS` `6.14.5` are
+the exact versions `VRTX` is compiled against, and a different version of either
+is a build error rather than a soft incompatibility.
+
+CocoaPods needs no such step — see below.
 
 ### CocoaPods
 
@@ -51,11 +60,21 @@ Add VRTX to your `Podfile`:
 platform :ios, '15.6'
 
 target 'YourApp' do
-  pod 'VRTX', '0.1.2'
+  pod 'VRTX', '0.1.3'
 end
 ```
 
 Then run `pod install` and open the generated `.xcworkspace`.
+
+`TalsecRuntime.xcframework` is bundled inside the pod and `DeviceKit` is
+declared as a pod dependency, so both arrive automatically. freeRASP is
+MIT-licensed and its notice ships in the pod as `TalsecRuntime-LICENSE.txt`.
+
+> **Versions before 0.1.3 cannot be built with CocoaPods.** The pod declared no
+> dependencies, so neither `DeviceKit` nor `TalsecRuntime` was available:
+> compiling against `import VRTX` failed, and a build that got past that would
+> fail at launch on the missing `TalsecRuntime.framework`. Use 0.1.3 or later,
+> or integrate with SwiftPM.
 
 ## Quickstart
 
