@@ -20,7 +20,7 @@ The official iOS SDK for Vrtx — onboarding, wallet, and card flows for your ap
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.1.3"),
+    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.1.4"),
     .package(url: "https://github.com/devicekit/DeviceKit", exact: "5.7.0"),
     .package(url: "https://github.com/talsec/Free-RASP-iOS", exact: "6.14.5")
 ],
@@ -60,7 +60,7 @@ Add VRTX to your `Podfile`:
 platform :ios, '15.6'
 
 target 'YourApp' do
-  pod 'VRTX', '0.1.3'
+  pod 'VRTX', '0.1.4'
 end
 ```
 
@@ -70,11 +70,11 @@ Then run `pod install` and open the generated `.xcworkspace`.
 declared as a pod dependency, so both arrive automatically. freeRASP is
 MIT-licensed and its notice ships in the pod as `TalsecRuntime-LICENSE.txt`.
 
-> **Versions before 0.1.3 cannot be built with CocoaPods.** The pod declared no
+> **CocoaPods requires 0.1.4 or later.** Earlier pod versions declared no
 > dependencies, so neither `DeviceKit` nor `TalsecRuntime` was available:
 > compiling against `import VRTX` failed, and a build that got past that would
-> fail at launch on the missing `TalsecRuntime.framework`. Use 0.1.3 or later,
-> or integrate with SwiftPM.
+> fail at launch on the missing `TalsecRuntime.framework`. 0.1.3 was never
+> published to CocoaPods at all — it exists only for Swift Package Manager.
 
 ## Quickstart
 
