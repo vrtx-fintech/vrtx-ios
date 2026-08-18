@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'VRTX'
-  s.version          = '0.1.6'
+  s.version          = '0.1.7'
   s.summary          = 'The official iOS SDK for Vrtx — onboarding, wallet, and card flows.'
   s.description      = <<-DESC
     Binary (XCFramework) distribution of the official Vrtx iOS SDK, providing
@@ -24,12 +24,12 @@ Pod::Spec.new do |s|
   # is an unacceptable supply-chain gap. The release pipeline rewrites the
   # version, URL and checksum together and fails if either rewrite misses.
   s.source           = {
-    :http => "https://github.com/vrtx-fintech/vrtx-ios/releases/download/0.1.6/VRTX.cocoapods.zip",
+    :http => "https://github.com/vrtx-fintech/vrtx-ios/releases/download/0.1.7/VRTX.cocoapods.zip",
     # Placeholder: overwritten with the real checksum by the release pipeline.
     # `pod trunk push` runs `pod lib lint`, which downloads the archive and
     # verifies this value, so a stale placeholder fails the publish rather than
     # shipping an unverified binary.
-    :sha256 => '2b0b57fb5024c8a85833d7d66fc46bd8c1e69b670302263bfe4c8b308bdda1e6'
+    :sha256 => '5f7afb639379f44dd639daf7b45fd3e3b1aa39849d1759de3fe8e18229d1c693'
   }
 
   # VRTX.framework links TalsecRuntime dynamically
