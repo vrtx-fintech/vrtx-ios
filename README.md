@@ -20,7 +20,7 @@ The official iOS SDK for Vrtx — onboarding, wallet, and card flows for your ap
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.1.2"),
+    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.1.3"),
     .package(url: "https://github.com/devicekit/DeviceKit", exact: "5.7.0"),
     .package(url: "https://github.com/talsec/Free-RASP-iOS", exact: "6.14.5")
 ],
