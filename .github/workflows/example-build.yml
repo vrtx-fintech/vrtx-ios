@@ -7,6 +7,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# The `signed-release` job archives an IPA for device-side FreeRASP checks;
+# it does not upload to TestFlight.
+
 permissions:
   contents: read
 
@@ -65,3 +68,115 @@ jobs:
             -skipPackagePluginValidation \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO
+
+  signed-release:
+    name: Signed Release IPA
+    # Match the internal SDK workflow: archive a signed release whenever CI
+    # has its signing secrets, and otherwise leave the normal CI build green.
+    runs-on: macos-15
+    timeout-minutes: 30
+    # The provisioning profile is managed as an environment secret, matching
+    # the internal demo-release workflow.
+    environment: testing
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Set up Xcode (latest stable)
+        uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
+        with:
+          xcode-version: latest-stable
+
+      - name: Restore SPM cache
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: |
+            ~/Library/Caches/org.swift.swiftpm
+            ~/.swiftpm
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/*.xcodeproj/project.pbxproj', 'Package.swift', '**/Package.resolved') }}
+
+      # Signing-secret names shared with the internal sdk-ios workflow:
+      # - IOS_DISTRIBUTION_CERT_BASE64: base64-encoded .p12 distribution certificate
+      # - IOS_DISTRIBUTION_CERT_PASSWORD: password for that .p12
+      # - IOS_PROVISIONING_PROFILE_BASE64: base64-encoded ad-hoc provisioning profile
+      # - KEYCHAIN_PASSWORD: temporary CI keychain password
+      - name: Install signing certificate and provisioning profile
+        id: signing
+        env:
+          IOS_DISTRIBUTION_CERT_BASE64: ${{ secrets.IOS_DISTRIBUTION_CERT_BASE64 }}
+          IOS_DISTRIBUTION_CERT_PASSWORD: ${{ secrets.IOS_DISTRIBUTION_CERT_PASSWORD }}
+          IOS_PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [ -z "$IOS_DISTRIBUTION_CERT_BASE64" ] || [ -z "$IOS_PROVISIONING_PROFILE_BASE64" ]; then
+            echo "::warning::iOS signing secrets are unavailable; skipping the signed release archive."
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          CERTIFICATE_PATH="$RUNNER_TEMP/build_certificate.p12"
+          PROFILE_PATH="$RUNNER_TEMP/build.mobileprovision"
+          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+
+          echo -n "$IOS_DISTRIBUTION_CERT_BASE64" | base64 --decode > "$CERTIFICATE_PATH"
+          echo -n "$IOS_PROVISIONING_PROFILE_BASE64" | base64 --decode > "$PROFILE_PATH"
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERTIFICATE_PATH" -P "$IOS_DISTRIBUTION_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychains -d user -s "$KEYCHAIN_PATH" $(security list-keychains -d user | tr -d '"')
+
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          PROFILE_UUID="$(security cms -D -i "$PROFILE_PATH" | plutil -extract UUID raw -)"
+          cp "$PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
+          echo "configured=true" >> "$GITHUB_OUTPUT"
+
+      - name: Archive signed Release app
+        if: steps.signing.outputs.configured == 'true'
+        run: |
+          set -o pipefail
+          xcodebuild archive \
+            -project "${PROJECT}" \
+            -scheme "${SCHEME}" \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/Example.xcarchive" \
+            -derivedDataPath .derivedData \
+            -skipPackagePluginValidation \
+            OTHER_CODE_SIGN_FLAGS="--keychain $RUNNER_TEMP/app-signing.keychain-db" \
+            CODE_SIGN_STYLE=Automatic
+
+      - name: Export ad-hoc IPA
+        if: steps.signing.outputs.configured == 'true'
+        run: |
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<'PLIST'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>ad-hoc</string>
+            <key>signingStyle</key>
+            <string>automatic</string>
+          </dict>
+          </plist>
+          PLIST
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/Example.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/export"
+
+      - name: Upload signed IPA artifact
+        if: steps.signing.outputs.configured == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Example-signed-release-ipa
+          path: ${{ runner.temp }}/export/*.ipa
+          if-no-files-found: error
+          retention-days: 14
