@@ -103,6 +103,7 @@ jobs:
       # - IOS_DISTRIBUTION_CERT_PASSWORD: password for that .p12
       # - IOS_PROVISIONING_PROFILE_BASE64: base64-encoded ad-hoc provisioning profile
       # - KEYCHAIN_PASSWORD: temporary CI keychain password
+      # All four live on the `testing` GitHub Environment.
       - name: Install signing certificate and provisioning profile
         id: signing
         env:
@@ -112,15 +113,36 @@ jobs:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
           set -euo pipefail
-          if [ -z "$IOS_DISTRIBUTION_CERT_BASE64" ] || [ -z "$IOS_PROVISIONING_PROFILE_BASE64" ]; then
-            echo "::warning::iOS signing secrets are unavailable; skipping the signed release archive."
+
+          # Three states, deliberately distinguished. Nothing configured is the
+          # normal case on forks and before secrets are provisioned, so it skips
+          # and leaves CI green. *Partially* configured is always a mistake —
+          # typically a secret stored under the wrong name — and must not be
+          # allowed to masquerade as the skip case, because that reports success
+          # while producing no IPA at all.
+          present=(); missing=()
+          for name in IOS_DISTRIBUTION_CERT_BASE64 IOS_DISTRIBUTION_CERT_PASSWORD \
+                      IOS_PROVISIONING_PROFILE_BASE64 KEYCHAIN_PASSWORD; do
+            if [ -n "${!name}" ]; then present+=("$name"); else missing+=("$name"); fi
+          done
+
+          if [ "${#present[@]}" -eq 0 ]; then
+            echo "::warning::No iOS signing secrets configured; skipping the signed release archive."
             echo "configured=false" >> "$GITHUB_OUTPUT"
             exit 0
+          fi
+
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "::error::iOS signing is partially configured. Missing: ${missing[*]}"
+            echo "::error::Check for a typo in the secret names — the workflow reads IOS_DISTRIBUTION_CERT_* (not IOS_DISTRIBUTION_CERTIFICATE_*)."
+            exit 1
           fi
 
           CERTIFICATE_PATH="$RUNNER_TEMP/build_certificate.p12"
           PROFILE_PATH="$RUNNER_TEMP/build.mobileprovision"
           KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+          # Signing material: remove the decoded p12 as soon as it is imported.
+          trap 'rm -f "$CERTIFICATE_PATH"' EXIT
 
           echo -n "$IOS_DISTRIBUTION_CERT_BASE64" | base64 --decode > "$CERTIFICATE_PATH"
           echo -n "$IOS_PROVISIONING_PROFILE_BASE64" | base64 --decode > "$PROFILE_PATH"
@@ -130,17 +152,57 @@ jobs:
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
           security import "$CERTIFICATE_PATH" -P "$IOS_DISTRIBUTION_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          # shellcheck disable=SC2046
           security list-keychains -d user -s "$KEYCHAIN_PATH" $(security list-keychains -d user | tr -d '"')
 
           mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
-          PROFILE_UUID="$(security cms -D -i "$PROFILE_PATH" | plutil -extract UUID raw -)"
+          PROFILE_PLIST="$(security cms -D -i "$PROFILE_PATH")"
+          PROFILE_UUID="$(printf '%s' "$PROFILE_PLIST" | plutil -extract UUID raw -)"
           cp "$PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
+
+          # Derive team and profile name from the profile itself so there is no
+          # second copy of them to drift out of sync.
+          PROFILE_NAME="$(printf '%s' "$PROFILE_PLIST" | plutil -extract Name raw -)"
+          TEAM_ID="$(printf '%s' "$PROFILE_PLIST" | plutil -extract TeamIdentifier.0 raw -)"
+          # The export method has to match the profile type or -exportArchive
+          # fails on a mismatch: profiles that provision specific devices are
+          # ad-hoc/development, ones that don't are App Store.
+          if printf '%s' "$PROFILE_PLIST" | plutil -extract ProvisionedDevices raw - >/dev/null 2>&1; then
+            EXPORT_METHOD="release-testing"   # formerly `ad-hoc`
+          else
+            EXPORT_METHOD="app-store-connect"
+          fi
+
+          {
+            echo "TEAM_ID=$TEAM_ID"
+            echo "PROFILE_NAME=$PROFILE_NAME"
+            echo "EXPORT_METHOD=$EXPORT_METHOD"
+          } >> "$GITHUB_ENV"
           echo "configured=true" >> "$GITHUB_OUTPUT"
 
       - name: Archive signed Release app
         if: steps.signing.outputs.configured == 'true'
         run: |
           set -o pipefail
+          # Manual signing, matching vrtx-sdk-ios's release-demo.yml. Automatic
+          # signing needs Xcode to authenticate to Apple, which CI cannot do
+          # with only a cert and profile in the keychain.
+          #
+          # An xcconfig applies these settings build-wide. vrtx-sdk-ios cannot do
+          # that (VRTX-2717: a build-wide PROVISIONING_PROFILE_SPECIFIER reaches
+          # its first-party VRTX.framework target and -exportArchive then fails
+          # with "VRTX.framework does not support provisioning profiles"), which
+          # is why it bakes signing into per-tenant build configurations instead.
+          # Here VRTX arrives as an SPM binaryTarget rather than a project
+          # target, so there is no framework target to receive a profile and the
+          # simpler xcconfig is sufficient. If export ever fails on an embedded
+          # framework, move these onto the Example target in project.pbxproj.
+          cat > "$RUNNER_TEMP/signing.xcconfig" <<EOF
+          CODE_SIGN_STYLE = Manual
+          DEVELOPMENT_TEAM = ${TEAM_ID}
+          PROVISIONING_PROFILE_SPECIFIER = ${PROFILE_NAME}
+          CODE_SIGN_IDENTITY = Apple Distribution
+          EOF
           xcodebuild archive \
             -project "${PROJECT}" \
             -scheme "${SCHEME}" \
@@ -149,24 +211,28 @@ jobs:
             -archivePath "$RUNNER_TEMP/Example.xcarchive" \
             -derivedDataPath .derivedData \
             -skipPackagePluginValidation \
-            OTHER_CODE_SIGN_FLAGS="--keychain $RUNNER_TEMP/app-signing.keychain-db" \
-            CODE_SIGN_STYLE=Automatic
+            -xcconfig "$RUNNER_TEMP/signing.xcconfig" \
+            OTHER_CODE_SIGN_FLAGS="--keychain $RUNNER_TEMP/app-signing.keychain-db"
 
-      - name: Export ad-hoc IPA
+      - name: Export IPA
         if: steps.signing.outputs.configured == 'true'
         run: |
-          cat > "$RUNNER_TEMP/ExportOptions.plist" <<'PLIST'
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
           <plist version="1.0">
           <dict>
-            <key>method</key>
-            <string>ad-hoc</string>
-            <key>signingStyle</key>
-            <string>automatic</string>
+            <key>method</key><string>${EXPORT_METHOD}</string>
+            <key>teamID</key><string>${TEAM_ID}</string>
+            <key>signingStyle</key><string>manual</string>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>com.vrtx.Example</key><string>${PROFILE_NAME}</string>
+            </dict>
           </dict>
           </plist>
-          PLIST
+          EOF
           xcodebuild -exportArchive \
             -archivePath "$RUNNER_TEMP/Example.xcarchive" \
             -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
@@ -174,7 +240,7 @@ jobs:
 
       - name: Upload signed IPA artifact
         if: steps.signing.outputs.configured == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: Example-signed-release-ipa
           path: ${{ runner.temp }}/export/*.ipa
