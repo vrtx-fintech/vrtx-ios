@@ -1,0 +1,14 @@
+{
+  "title": "📱 iOS SDK",
+  "visibility": "public",
+  "changelogFormat": "keepachangelog",
+  "jira": {
+    "fixVersionTemplate": "iOS {version}",
+    "releaseNoteField": null
+  },
+  "slack": {
+    "visibility": "internal",
+    "context": "Distribution: *SwiftPM* · binary xcframework"
+  },
+  "testflight": { "enabled": false }
+}
