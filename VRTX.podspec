@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
     # `pod trunk push` runs `pod lib lint`, which downloads the archive and
     # verifies this value, so a stale placeholder fails the publish rather than
     # shipping an unverified binary.
-    :sha256 => '0000000000000000000000000000000000000000000000000000000000000000'
+    :sha256 => '6ebc13c13cb4b5c387cdb100994d704bdedcfabeaadaedc8dd60cc5f9a4cbf39'
   }
 
   # VRTX.framework links TalsecRuntime dynamically

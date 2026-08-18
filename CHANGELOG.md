@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.3] - 2026-08-18
+
+Improves connection reliability in production environments.
+
+CocoaPods integrations now resolve all required runtime dependencies automatically; no additional setup is needed. The distributed archive is now checksum-verified.
+
 ## [0.1.2] - 2026-08-17
 
 release - 2026-08-17
