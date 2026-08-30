@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.8] - 2026-08-30
+
+allow sandbox development integrity signals
+
 ## [0.1.7] - 2026-08-18
 
 Adds support for running the SDK on simulators and emulators outside production, so integrations can be developed and tested without physical hardware. Production continues to reject them, and every other device-integrity check remains enforced in all environments.
