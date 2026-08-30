@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.9] - 2026-08-30
+
+embed private runtime in sdk
+
 ## [0.1.8] - 2026-08-30
 
 allow sandbox development integrity signals

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'VRTX'
-  s.version          = '0.1.8'
+  s.version          = '0.1.9'
   s.summary          = 'The official iOS SDK for Vrtx — onboarding, wallet, and card flows.'
   s.description      = <<-DESC
     Binary (XCFramework) distribution of the official Vrtx iOS SDK, providing
@@ -24,12 +24,12 @@ Pod::Spec.new do |s|
   # is an unacceptable supply-chain gap. The release pipeline rewrites the
   # version, URL and checksum together and fails if either rewrite misses.
   s.source           = {
-    :http => "https://github.com/vrtx-fintech/vrtx-ios/releases/download/0.1.8/VRTX.cocoapods.zip",
+    :http => "https://github.com/vrtx-fintech/vrtx-ios/releases/download/0.1.9/VRTX.cocoapods.zip",
     # Placeholder: overwritten with the real checksum by the release pipeline.
     # `pod trunk push` runs `pod lib lint`, which downloads the archive and
     # verifies this value, so a stale placeholder fails the publish rather than
     # shipping an unverified binary.
-    :sha256 => '0e59d934922087b3b489a395056984488b8e0c841541cd34a5d62395cca7de62'
+    :sha256 => 'aa8595952bbb491a54898e82c15c673d587c8f245406d6080e344abf2852f2af'
   }
 
   # VRTX.framework links TalsecRuntime dynamically
@@ -38,7 +38,7 @@ Pod::Spec.new do |s|
   # publishes no pod — Free-RASP-iOS is SwiftPM-only — so there is nothing to
   # depend on and the framework travels inside our archive instead. freeRASP is
   # MIT-licensed; its notice ships as `TalsecRuntime-LICENSE.txt` in the archive.
-  s.vendored_frameworks = 'VRTX.xcframework', 'TalsecRuntime.xcframework'
+  s.vendored_frameworks = 'VRTX.xcframework', 'VRTXSupport.xcframework', 'TalsecRuntime.xcframework'
 
   # DeviceKit appears in VRTX's public `.swiftinterface`, so consumers need the
   # module to compile against VRTX even though it links statically. Pinned to
