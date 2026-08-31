@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.11] - 2026-08-31
+
+support runtime in cocopoads
+
 ## [0.1.10] - 2026-08-31
 
 Fix CocoaPods distribution: the embedded support runtime is now packaged as VRTXSupport.framework (renamed from the vendor framework) so CocoaPods can link it; 0.1.9 failed pod trunk publish with a linker error. No SDK code changes.
