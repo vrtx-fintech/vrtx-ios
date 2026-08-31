@@ -20,7 +20,7 @@ The official iOS SDK for Vrtx — onboarding, wallet, and card flows for your ap
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.1.9"),
+    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.1.10"),
     .package(url: "https://github.com/devicekit/DeviceKit", exact: "5.7.0"),
     .package(url: "https://github.com/talsec/Free-RASP-iOS", exact: "6.14.5")
 ],
@@ -60,7 +60,7 @@ Add VRTX to your `Podfile`:
 platform :ios, '15.6'
 
 target 'YourApp' do
-  pod 'VRTX', '0.1.9'
+  pod 'VRTX', '0.1.10'
 end
 ```
 
