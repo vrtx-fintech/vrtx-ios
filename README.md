@@ -91,35 +91,6 @@ import VRTX
 let customThemeOptions = ThemeOptions()
 customThemeOptions.primaryColor = "#0A5CFF"
 customThemeOptions.buttonTextColor = "#FFFFFF"
-customThemeOptions.backgroundColor = "#F7F9FC"
-customThemeOptions.secondaryBackgroundColor = "#FFFFFF"
-customThemeOptions.textColor = "#101828"
-customThemeOptions.secondaryTextColor = "#475467"
-customThemeOptions.tertiaryTextColor = "#667085"
-customThemeOptions.quaternaryTextColor = "#98A2B3"
-customThemeOptions.fieldBackground = "#FFFFFF"
-customThemeOptions.textFieldBackgroundColor = "#FFFFFF"
-customThemeOptions.textFieldOutlineColor = "#D0D5DD"
-customThemeOptions.secondaryButtonColor = "#EAF1FF"
-customThemeOptions.creditArrowColor = "#12B76A"
-customThemeOptions.creditBackgroundColor = "#ECFDF3"
-customThemeOptions.errorColor = "#D92D20"
-customThemeOptions.errorBackgroundColor = "rgba(217,45,32,0.10)"
-customThemeOptions.cardGradientStart = "#0A5CFF"
-customThemeOptions.cardGradientEnd = "#0044CC"
-customThemeOptions.fontFamilyEnglish = "Arial"
-customThemeOptions.fontFamilyArabic = "Arial"
-customThemeOptions.bodyFontSize = 16
-customThemeOptions.textSizes = [
-    "l": 32, "t_1": 28, "t_2": 22, "t_3": 20,
-    "h": 17, "body": 16, "cta": 15, "subheading": 14,
-    "footnote": 13, "cap_1": 12, "cap_2": 11,
-]
-customThemeOptions.cardCornerRadius = 16
-customThemeOptions.buttonCornerRadius = 24
-customThemeOptions.spacing = ["xs": 4, "sm": 8, "md": 16, "lg": 24, "xl": 32]
-customThemeOptions.sizing = ["buttonHeight": 56, "fieldHeight": 56, "cardHeight": 220]
-customThemeOptions.layout = .optionC
 customThemeOptions.cardImage = .remote(URL(string: "https://example.com/card.png")!)
 customThemeOptions.brandLogo = .remote(URL(string: "https://example.com/logo.png")!)
 
