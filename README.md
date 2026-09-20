@@ -4,9 +4,11 @@ The official iOS SDK for Vrtx — onboarding, wallet, and card flows for your ap
 
 ## Requirements
 
-- iOS 15.6+
-- Xcode 16+
-- Swift 5.9+
+| Tooling | Minimum |
+| ---------------- | ------- |
+| iOS | 15.6 |
+| Xcode | 16 |
+| Swift | 5.9 |
 
 ## Installation
 
@@ -83,7 +85,43 @@ The SDK presents itself and reports back via the completion handler;
 `started` is `true` once the flow is on screen.
 
 ```swift
+import Foundation
 import VRTX
+
+let customThemeOptions = ThemeOptions()
+customThemeOptions.primaryColor = "#0A5CFF"
+customThemeOptions.buttonTextColor = "#FFFFFF"
+customThemeOptions.backgroundColor = "#F7F9FC"
+customThemeOptions.secondaryBackgroundColor = "#FFFFFF"
+customThemeOptions.textColor = "#101828"
+customThemeOptions.secondaryTextColor = "#475467"
+customThemeOptions.tertiaryTextColor = "#667085"
+customThemeOptions.quaternaryTextColor = "#98A2B3"
+customThemeOptions.fieldBackground = "#FFFFFF"
+customThemeOptions.textFieldBackgroundColor = "#FFFFFF"
+customThemeOptions.textFieldOutlineColor = "#D0D5DD"
+customThemeOptions.secondaryButtonColor = "#EAF1FF"
+customThemeOptions.creditArrowColor = "#12B76A"
+customThemeOptions.creditBackgroundColor = "#ECFDF3"
+customThemeOptions.errorColor = "#D92D20"
+customThemeOptions.errorBackgroundColor = "rgba(217,45,32,0.10)"
+customThemeOptions.cardGradientStart = "#0A5CFF"
+customThemeOptions.cardGradientEnd = "#0044CC"
+customThemeOptions.fontFamilyEnglish = "Arial"
+customThemeOptions.fontFamilyArabic = "Arial"
+customThemeOptions.bodyFontSize = 16
+customThemeOptions.textSizes = [
+    "l": 32, "t_1": 28, "t_2": 22, "t_3": 20,
+    "h": 17, "body": 16, "cta": 15, "subheading": 14,
+    "footnote": 13, "cap_1": 12, "cap_2": 11,
+]
+customThemeOptions.cardCornerRadius = 16
+customThemeOptions.buttonCornerRadius = 24
+customThemeOptions.spacing = ["xs": 4, "sm": 8, "md": 16, "lg": 24, "xl": 32]
+customThemeOptions.sizing = ["buttonHeight": 56, "fieldHeight": 56, "cardHeight": 220]
+customThemeOptions.layout = .optionC
+customThemeOptions.cardImage = .remote(URL(string: "https://example.com/card.png")!)
+customThemeOptions.brandLogo = .remote(URL(string: "https://example.com/logo.png")!)
 
 Vrtx.setup(
     environment: .sandbox,
@@ -93,8 +131,10 @@ Vrtx.setup(
     language: .english,
     externalReference: "YOUR_EXTERNAL_REFERENCE",
     fontFamily: "Inter",
+    theme: customThemeOptions,
     onSuccess: { /* SDK UI launched */ },
-    onError: { error in /* error.status, error.message */ }
+    onError: { error in /* error.status, error.message */ },
+    onExit: { /* SDK UI dismissed */ }
 )
 ```
 
@@ -108,6 +148,43 @@ Vrtx.setup(
 | `language` | `Language` | `.english`, `.arabic` |
 | `mode` | `Mode` | `.light`, `.dark` |
 | `externalReference` | `String` | Omit when no external reference is needed |
+
+### `ThemeOptions` reference
+
+| Parameter | Type | Values |
+| --------- | ---- | ------ |
+| `primaryColor` | `String?` | `"#0A5CFF"` or `"rgba(10,92,255,1)"` |
+| `buttonTextColor` | `String?` | `"#FFFFFF"` |
+| `backgroundColor` | `String?` | `"#F7F9FC"` |
+| `secondaryBackgroundColor` | `String?` | `"#FFFFFF"` |
+| `textColor` | `String?` | `"#101828"` |
+| `secondaryTextColor` | `String?` | `"#475467"` |
+| `tertiaryTextColor` | `String?` | `"#667085"` |
+| `quaternaryTextColor` | `String?` | `"#98A2B3"` |
+| `fieldBackground` | `String?` | `"#FFFFFF"` |
+| `textFieldBackgroundColor` | `String?` | `"#FFFFFF"` |
+| `textFieldOutlineColor` | `String?` | `"#D0D5DD"` |
+| `secondaryButtonColor` | `String?` | `"#EAF1FF"` |
+| `creditArrowColor` | `String?` | `"#12B76A"` |
+| `creditBackgroundColor` | `String?` | `"#ECFDF3"` |
+| `errorColor` | `String?` | `"#D92D20"` |
+| `errorBackgroundColor` | `String?` | `"rgba(217,45,32,0.10)"` |
+| `cardGradientStart` | `String?` | `"#0A5CFF"` |
+| `cardGradientEnd` | `String?` | `"#0044CC"` |
+| `fontFamilyEnglish` | `String?` | Registered family, e.g. `"Arial"` |
+| `fontFamilyArabic` | `String?` | Registered family, e.g. `"Arial"` |
+| `bodyFontSize` | `CGFloat?` | `16` |
+| `textSizes` | `[String: CGFloat]?` | `{"body": 16, "cta": 15}` |
+| `cardCornerRadius` | `CGFloat?` | `16` |
+| `buttonCornerRadius` | `CGFloat?` | `24` |
+| `spacing` | `[String: CGFloat]?` | `{"sm": 8, "md": 16}` |
+| `sizing` | `[String: CGFloat]?` | `{"buttonHeight": 56}` |
+| `layout` | `VrtxHomeDesignOption?` | `.optionA`, `.optionB`, `.optionC` |
+| `cardImage` | `VrtxImageSource?` | `.image(UIImage(...))` or `.remote(URL(...))` |
+| `brandLogo` | `VrtxImageSource?` | `.image(UIImage(...))` or `.remote(URL(...))` |
+
+Color values use `#RRGGBB` or `rgba(r,g,b,a)` strings. iOS `ThemeOptions`
+does not expose an Android-style `brandName` property.
 
 For appearance, pass `mode` and a `fontFamily` string matching a font family already embedded and registered in your app, such as `"Inter"`.
 
