@@ -96,7 +96,7 @@ class ViewController: UIViewController {
             language: .english,
             externalReference: externalReference,
             fontFamily: "Inter",
-            homeDesignOption: .optionC, // .optionA, .optionB, or .optionC
+            designOption: .optionC, // .optionA, .optionB, or .optionC
             theme: makeExampleTheme(),
             onSuccess: {
                 // SDK UI launched

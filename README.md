@@ -22,7 +22,7 @@ The official iOS SDK for Vrtx — onboarding, wallet, and card flows for your ap
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.1.13"),
+    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.1.14"),
     .package(url: "https://github.com/devicekit/DeviceKit", exact: "5.7.0"),
     .package(url: "https://github.com/talsec/Free-RASP-iOS", exact: "6.14.5")
 ],
@@ -62,7 +62,7 @@ Add VRTX to your `Podfile`:
 platform :ios, '15.6'
 
 target 'YourApp' do
-  pod 'VRTX', '0.1.13'
+  pod 'VRTX', '0.1.14'
 end
 ```
 
@@ -137,7 +137,7 @@ Vrtx.setup(
     language: .english,
     externalReference: "YOUR_EXTERNAL_REFERENCE",
     fontFamily: "Inter",
-    homeDesignOption: .optionC,
+    designOption: .optionC,
     theme: customThemeOptions,
     onSuccess: { /* SDK UI launched */ },
     onError: { error in /* error.status, error.message */ },
@@ -155,7 +155,7 @@ Vrtx.setup(
 | `language` | `Language` | `.english`, `.arabic` |
 | `mode` | `Mode` | `.light`, `.dark` |
 | `externalReference` | `String` | Omit when no external reference is needed |
-| `homeDesignOption` | `VrtxHomeDesignOption` | `.optionA`, `.optionB`, `.optionC` |
+| `designOption` | `DesignOption` | `.optionA`, `.optionB`, `.optionC` |
 
 ### `ThemeOptions` reference
 
