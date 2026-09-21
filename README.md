@@ -22,7 +22,7 @@ The official iOS SDK for Vrtx — onboarding, wallet, and card flows for your ap
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.1.10"),
+    .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.1.13"),
     .package(url: "https://github.com/devicekit/DeviceKit", exact: "5.7.0"),
     .package(url: "https://github.com/talsec/Free-RASP-iOS", exact: "6.14.5")
 ],
@@ -62,7 +62,7 @@ Add VRTX to your `Podfile`:
 platform :ios, '15.6'
 
 target 'YourApp' do
-  pod 'VRTX', '0.1.10'
+  pod 'VRTX', '0.1.13'
 end
 ```
 
@@ -89,10 +89,45 @@ import Foundation
 import VRTX
 
 let customThemeOptions = ThemeOptions()
-customThemeOptions.primaryColor = "#0A5CFF"
-customThemeOptions.buttonTextColor = "#FFFFFF"
 customThemeOptions.cardImage = .remote(URL(string: "https://example.com/card.png")!)
 customThemeOptions.brandLogo = .remote(URL(string: "https://example.com/logo.png")!)
+customThemeOptions.brandName = "Atlas Pay"
+customThemeOptions.colors = VrtxColors(
+    allBrands: .init(primary: "#377DFF", buttonLabel: "#FFFFFF"),
+    labels: .init(
+        primary: "#12233D", secondary: "#60708A",
+        tertiary: "#8B9AB2", quaternary: "#B8C4D6"
+    ),
+    fills: .init(
+        primary: "#EAF3FF", secondary: "#DCEAFF",
+        tertiary: "#C5D9F5", quaternary: "#ADC8EC",
+        vibrant: .init(secondary: "#4DE3D1")
+    ),
+    backgrounds: .init(
+        primary: "#F4F8FF", secondary: "#F7FAFF", tertiary: "#E7F5F6",
+        primaryElevated: "#FFFFFF", secondaryElevated: "#F1F6FC",
+        tertiaryElevated: "#E6EEF8"
+    ),
+    backgroundsGradient: .init(wb01: "#EAF3FF", wb02: "#E7F5F6"),
+    accents: .init(
+        red: "#E05252", redBg: "#FFE7E7", green: "#2E9B67",
+        greenBg: "#E1F5EA", orange: "#E58A2B", indigo: "#5B5BD6",
+        teal: "#4DE3D1", pink: "#D65B9B", cyan: "#2DAAC7", purple: "#8A5BD6"
+    )
+)
+customThemeOptions.spacing = VrtxSpacing(
+    x0: 0, xxs: 2, xs: 4, sm: 8, md: 12,
+    ml: 16, lg: 20, xl: 24, xxl: 32, xxxl: 40
+)
+customThemeOptions.radius = VrtxRadius(
+    x0: 0, xxs: 2, xs: 4, s: 6, sm: 8, md: 12,
+    ml: 16, lg: 20, xl: 24, xxl: 28, xxxl: 32,
+    big: 40, full: 999, huge: 64
+)
+customThemeOptions.sizing = VrtxSizing(
+    xxs: 2, xs: 4, sm: 8, md: 16,
+    lg: 24, xl: 32, xxl: 48, xxxl: 64
+)
 
 Vrtx.setup(
     environment: .sandbox,
@@ -102,6 +137,7 @@ Vrtx.setup(
     language: .english,
     externalReference: "YOUR_EXTERNAL_REFERENCE",
     fontFamily: "Inter",
+    homeDesignOption: .optionC,
     theme: customThemeOptions,
     onSuccess: { /* SDK UI launched */ },
     onError: { error in /* error.status, error.message */ },
@@ -119,43 +155,33 @@ Vrtx.setup(
 | `language` | `Language` | `.english`, `.arabic` |
 | `mode` | `Mode` | `.light`, `.dark` |
 | `externalReference` | `String` | Omit when no external reference is needed |
+| `homeDesignOption` | `VrtxHomeDesignOption` | `.optionA`, `.optionB`, `.optionC` |
 
 ### `ThemeOptions` reference
 
 | Parameter | Type | Values |
 | --------- | ---- | ------ |
-| `primaryColor` | `String?` | `"#0A5CFF"` or `"rgba(10,92,255,1)"` |
-| `buttonTextColor` | `String?` | `"#FFFFFF"` |
-| `backgroundColor` | `String?` | `"#F7F9FC"` |
-| `secondaryBackgroundColor` | `String?` | `"#FFFFFF"` |
-| `textColor` | `String?` | `"#101828"` |
-| `secondaryTextColor` | `String?` | `"#475467"` |
-| `tertiaryTextColor` | `String?` | `"#667085"` |
-| `quaternaryTextColor` | `String?` | `"#98A2B3"` |
-| `fieldBackground` | `String?` | `"#FFFFFF"` |
-| `textFieldBackgroundColor` | `String?` | `"#FFFFFF"` |
-| `textFieldOutlineColor` | `String?` | `"#D0D5DD"` |
-| `secondaryButtonColor` | `String?` | `"#EAF1FF"` |
-| `creditArrowColor` | `String?` | `"#12B76A"` |
-| `creditBackgroundColor` | `String?` | `"#ECFDF3"` |
-| `errorColor` | `String?` | `"#D92D20"` |
-| `errorBackgroundColor` | `String?` | `"rgba(217,45,32,0.10)"` |
-| `cardGradientStart` | `String?` | `"#0A5CFF"` |
-| `cardGradientEnd` | `String?` | `"#0044CC"` |
-| `fontFamilyEnglish` | `String?` | Registered family, e.g. `"Arial"` |
-| `fontFamilyArabic` | `String?` | Registered family, e.g. `"Arial"` |
-| `bodyFontSize` | `CGFloat?` | `16` |
-| `textSizes` | `[String: CGFloat]?` | `{"body": 16, "cta": 15}` |
-| `cardCornerRadius` | `CGFloat?` | `16` |
-| `buttonCornerRadius` | `CGFloat?` | `24` |
-| `spacing` | `[String: CGFloat]?` | `{"sm": 8, "md": 16}` |
-| `sizing` | `[String: CGFloat]?` | `{"buttonHeight": 56}` |
-| `layout` | `VrtxHomeDesignOption?` | `.optionA`, `.optionB`, `.optionC` |
+| `brandName` | `String?` | `"Atlas Pay"` |
 | `cardImage` | `VrtxImageSource?` | `.image(UIImage(...))` or `.remote(URL(...))` |
 | `brandLogo` | `VrtxImageSource?` | `.image(UIImage(...))` or `.remote(URL(...))` |
+| `colors` | `VrtxColors?` | `allBrands`, `labels`, `fills`, `backgrounds`, `backgroundsGradient`, `accents` |
+| `spacing` | `VrtxSpacing?` | `x0`, `xxs`, `xs`, `sm`, `md`, `ml`, `lg`, `xl`, `xxl`, `xxxl` |
+| `radius` | `VrtxRadius?` | `x0`, `xxs`, `xs`, `s`, `sm`, `md`, `ml`, `lg`, `xl`, `xxl`, `xxxl`, `big`, `full`, `huge` |
+| `sizing` | `VrtxSizing?` | `xxs`, `xs`, `sm`, `md`, `lg`, `xl`, `xxl`, `xxxl` |
 
-Color values use `#RRGGBB` or `rgba(r,g,b,a)` strings. iOS `ThemeOptions`
-does not expose an Android-style `brandName` property.
+`VrtxColors` contains these nested keys:
+
+| Group | Type | Keys |
+| ----- | ---- | ---- |
+| `colors.allBrands` | `VrtxColors.AllBrands` | `primary`, `buttonLabel` |
+| `colors.labels` | `VrtxColors.Labels` | `primary`, `secondary`, `tertiary`, `quaternary` |
+| `colors.fills` | `VrtxColors.Fills` | `primary`, `secondary`, `tertiary`, `quaternary`, `vibrant.secondary` |
+| `colors.backgrounds` | `VrtxColors.Backgrounds` | `primary`, `secondary`, `tertiary`, `primaryElevated`, `secondaryElevated`, `tertiaryElevated` |
+| `colors.backgroundsGradient` | `VrtxColors.BackgroundsGradient` | `wb01`, `wb02` |
+| `colors.accents` | `VrtxColors.Accents` | `red`, `redBg`, `green`, `greenBg`, `orange`, `indigo`, `teal`, `pink`, `cyan`, `purple` |
+
+Color values use `#RRGGBB` or `rgba(r,g,b,a)` strings. URLs from a theme
+configuration map to `.remote(URL(...))` on iOS.
 
 For appearance, pass `mode` and a `fontFamily` string matching a font family already embedded and registered in your app, such as `"Inter"`.
 

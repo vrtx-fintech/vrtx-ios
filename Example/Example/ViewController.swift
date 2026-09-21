@@ -18,49 +18,67 @@ class ViewController: UIViewController {
     private func makeExampleTheme() -> ThemeOptions {
         let theme = ThemeOptions()
 
-        theme.primaryColor = "#0A5CFF"
-        theme.buttonTextColor = "#FFFFFF"
-        theme.backgroundColor = "#F7F9FC"
-        theme.secondaryBackgroundColor = "#FFFFFF"
-        theme.textColor = "#101828"
-        theme.secondaryTextColor = "#475467"
-        theme.tertiaryTextColor = "#667085"
-        theme.quaternaryTextColor = "#98A2B3"
-        theme.fieldBackground = "#FFFFFF"
-        theme.textFieldBackgroundColor = "#FFFFFF"
-        theme.textFieldOutlineColor = "#D0D5DD"
-        theme.secondaryButtonColor = "#EAF1FF"
-        theme.creditArrowColor = "#12B76A"
-        theme.creditBackgroundColor = "#ECFDF3"
-        theme.errorColor = "#D92D20"
-        theme.errorBackgroundColor = "rgba(217,45,32,0.10)"
-        theme.cardGradientStart = "#0A5CFF"
-        theme.cardGradientEnd = "#0044CC"
+        theme.cardImage = .remote(URL(string: "https://example.com/card.png")!)
+        theme.brandLogo = .remote(URL(string: "https://example.com/logo.png")!)
+        theme.brandName = "Atlas Pay"
 
-        theme.fontFamilyEnglish = "Arial"
-        theme.fontFamilyArabic = "Arial"
-        theme.bodyFontSize = 16
-        theme.textSizes = [
-            "l": 32,
-            "t_1": 28,
-            "t_2": 22,
-            "t_3": 20,
-            "h": 17,
-            "body": 16,
-            "cta": 15,
-            "subheading": 14,
-            "footnote": 13,
-            "cap_1": 12,
-            "cap_2": 11,
-        ]
+        theme.colors = VrtxColors(
+            allBrands: VrtxColors.AllBrands(
+                primary: "#377DFF",
+                buttonLabel: "#FFFFFF"
+            ),
+            labels: VrtxColors.Labels(
+                primary: "#12233D",
+                secondary: "#60708A",
+                tertiary: "#8B9AB2",
+                quaternary: "#B8C4D6"
+            ),
+            fills: VrtxColors.Fills(
+                primary: "#EAF3FF",
+                secondary: "#DCEAFF",
+                tertiary: "#C5D9F5",
+                quaternary: "#ADC8EC",
+                vibrant: VrtxColors.Fills.Vibrant(secondary: "#4DE3D1")
+            ),
+            backgrounds: VrtxColors.Backgrounds(
+                primary: "#F4F8FF",
+                secondary: "#F7FAFF",
+                tertiary: "#E7F5F6",
+                primaryElevated: "#FFFFFF",
+                secondaryElevated: "#F1F6FC",
+                tertiaryElevated: "#E6EEF8"
+            ),
+            backgroundsGradient: VrtxColors.BackgroundsGradient(
+                wb01: "#EAF3FF",
+                wb02: "#E7F5F6"
+            ),
+            accents: VrtxColors.Accents(
+                red: "#E05252",
+                redBg: "#FFE7E7",
+                green: "#2E9B67",
+                greenBg: "#E1F5EA",
+                orange: "#E58A2B",
+                indigo: "#5B5BD6",
+                teal: "#4DE3D1",
+                pink: "#D65B9B",
+                cyan: "#2DAAC7",
+                purple: "#8A5BD6"
+            )
+        )
 
-        theme.cardCornerRadius = 16
-        theme.buttonCornerRadius = 24
-        theme.spacing = ["xs": 4, "sm": 8, "md": 16, "lg": 24, "xl": 32]
-        theme.sizing = ["buttonHeight": 56, "fieldHeight": 56, "cardHeight": 220]
-        theme.layout = .optionC
-        theme.cardImage = .image(UIImage(systemName: "creditcard.fill")!)
-        theme.brandLogo = .image(UIImage(systemName: "v.circle.fill")!)
+        theme.spacing = VrtxSpacing(
+            x0: 0, xxs: 2, xs: 4, sm: 8, md: 12,
+            ml: 16, lg: 20, xl: 24, xxl: 32, xxxl: 40
+        )
+        theme.radius = VrtxRadius(
+            x0: 0, xxs: 2, xs: 4, s: 6, sm: 8,
+            md: 12, ml: 16, lg: 20, xl: 24, xxl: 28,
+            xxxl: 32, big: 40, full: 999, huge: 64
+        )
+        theme.sizing = VrtxSizing(
+            xxs: 2, xs: 4, sm: 8, md: 16,
+            lg: 24, xl: 32, xxl: 48, xxxl: 64
+        )
 
         return theme
     }
@@ -78,6 +96,7 @@ class ViewController: UIViewController {
             language: .english,
             externalReference: externalReference,
             fontFamily: "Inter",
+            homeDesignOption: .optionC, // .optionA, .optionB, or .optionC
             theme: makeExampleTheme(),
             onSuccess: {
                 // SDK UI launched

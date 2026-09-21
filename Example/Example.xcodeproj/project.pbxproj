@@ -393,7 +393,7 @@
 			repositoryURL = "https://github.com/vrtx-fintech/vrtx-ios";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.12;
+				minimumVersion = 0.1.13;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
