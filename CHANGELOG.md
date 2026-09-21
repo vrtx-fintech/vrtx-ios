@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.14] - 2026-09-21
+
+release - 2026-09-21 - rename home design setup option
+
 ## [0.1.13] - 2026-09-21
 
 release - 2026-09-21 
