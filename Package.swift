@@ -1,10 +1,10 @@
 // swift-tools-version:5.9
 import PackageDescription
 
-let vrtxURL = "https://github.com/vrtx-fintech/vrtx-ios/releases/download/0.1.12/VRTX.xcframework.zip"
-let vrtxChecksum = "3485444423317b2aec937ccfb62296e5e69f7aed8a4521230d9f241bad301e4e"
-let supportURL = "https://github.com/vrtx-fintech/vrtx-ios/releases/download/0.1.12/VRTXSupport.xcframework.zip"
-let supportChecksum = "271bcca8b7652777944d2dac1a66bd91cd28e892123da117f4f28d4a971ad3ba"
+let vrtxURL = "https://github.com/vrtx-fintech/vrtx-ios/releases/download/0.1.13/VRTX.xcframework.zip"
+let vrtxChecksum = "8c8c353df43a9aca2a6fffc5ff7cc0bd3d8e2f11764dbabb993e0fb803beddf5"
+let supportURL = "https://github.com/vrtx-fintech/vrtx-ios/releases/download/0.1.13/VRTXSupport.xcframework.zip"
+let supportChecksum = "ca933a1d120cfc9f947a1dae6121a457431fe1439cc1ba060a0507185fbe0d57"
 
 let package = Package(
     name: "VRTX",
