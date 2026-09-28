@@ -42,11 +42,7 @@ class ViewController: UIViewController {
             ),
             backgrounds: VrtxColors.Backgrounds(
                 primary: "#F4F8FF",
-                secondary: "#F7FAFF",
-                tertiary: "#E7F5F6",
-                primaryElevated: "#FFFFFF",
-                secondaryElevated: "#F1F6FC",
-                tertiaryElevated: "#E6EEF8"
+                secondary: "#F7FAFF"
             ),
             backgroundsGradient: VrtxColors.BackgroundsGradient(
                 wb01: "#EAF3FF",
@@ -56,28 +52,17 @@ class ViewController: UIViewController {
                 red: "#E05252",
                 redBg: "#FFE7E7",
                 green: "#2E9B67",
-                greenBg: "#E1F5EA",
-                orange: "#E58A2B",
-                indigo: "#5B5BD6",
-                teal: "#4DE3D1",
-                pink: "#D65B9B",
-                cyan: "#2DAAC7",
-                purple: "#8A5BD6"
+                greenBg: "#E1F5EA"
             )
         )
 
         theme.spacing = VrtxSpacing(
             x0: 0, xxs: 2, xs: 4, sm: 8, md: 12,
-            ml: 16, lg: 20, xl: 24, xxl: 32, xxxl: 40
+            ml: 16, lg: 20
         )
         theme.radius = VrtxRadius(
-            x0: 0, xxs: 2, xs: 4, s: 6, sm: 8,
-            md: 12, ml: 16, lg: 20, xl: 24, xxl: 28,
-            xxxl: 32, big: 40, full: 999, huge: 64
-        )
-        theme.sizing = VrtxSizing(
-            xxs: 2, xs: 4, sm: 8, md: 16,
-            lg: 24, xl: 32, xxl: 48, xxxl: 64
+            s: 6, sm: 8, md: 12, ml: 16, lg: 20,
+            xl: 24, full: 999, huge: 64
         )
 
         return theme
