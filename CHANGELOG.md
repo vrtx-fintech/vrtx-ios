@@ -2,7 +2,8 @@
 
 ## [0.1.15] - 2026-09-28
 
-release - 2026-09-28
+- Bump the packaged VRTX SDK to 0.1.15.
+- Update the ThemeOptions example and documentation to match the current SDK theme contract.
 
 ## [0.1.14] - 2026-09-21
 
