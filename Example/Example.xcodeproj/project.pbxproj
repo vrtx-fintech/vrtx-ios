@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A1EC000000000000000000D1 /* DeviceKit in Frameworks */ = {isa = PBXBuildFile; productRef = A1EC000000000000000000D2 /* DeviceKit */; };
 		A1EC000000000000000000E1 /* TalsecRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = A1EC000000000000000000E2 /* TalsecRuntime */; };
 		49B085C42FB349B300786686 /* VRTX in Frameworks */ = {isa = PBXBuildFile; productRef = 49B085C32FB349B300786686 /* VRTX */; };
 /* End PBXBuildFile section */
@@ -42,7 +41,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1EC000000000000000000D1 /* DeviceKit in Frameworks */,
 				A1EC000000000000000000E1 /* TalsecRuntime in Frameworks */,
 				49B085C42FB349B300786686 /* VRTX in Frameworks */,
 			);
@@ -88,7 +86,6 @@
 			name = Example;
 			packageProductDependencies = (
 				49B085C32FB349B300786686 /* VRTX */,
-				A1EC000000000000000000D2 /* DeviceKit */,
 				A1EC000000000000000000E2 /* TalsecRuntime */,
 			);
 			productName = Example;
@@ -121,7 +118,6 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				49B085C22FB349B300786686 /* XCRemoteSwiftPackageReference "vrtx-ios" */,
-				A1EC000000000000000000D3 /* XCRemoteSwiftPackageReference "DeviceKit" */,
 				A1EC000000000000000000E4 /* XCRemoteSwiftPackageReference "Free-RASP-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -372,14 +368,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		A1EC000000000000000000D3 /* XCRemoteSwiftPackageReference "DeviceKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/devicekit/DeviceKit";
-			requirement = {
-				kind = exactVersion;
-				version = 5.7.0;
-			};
-		};
 		A1EC000000000000000000E4 /* XCRemoteSwiftPackageReference "Free-RASP-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/talsec/Free-RASP-iOS";
@@ -399,11 +387,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		A1EC000000000000000000D2 /* DeviceKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A1EC000000000000000000D3 /* XCRemoteSwiftPackageReference "DeviceKit" */;
-			productName = DeviceKit;
-		};
 		A1EC000000000000000000E2 /* TalsecRuntime */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A1EC000000000000000000E4 /* XCRemoteSwiftPackageReference "Free-RASP-iOS" */;
