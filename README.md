@@ -17,13 +17,13 @@ The official iOS SDK for Vrtx — onboarding, wallet, and card flows for your ap
 1. **File → Add Package Dependencies…**
 2. Paste the repository URL: `https://github.com/vrtx-fintech/vrtx-ios`
 3. Choose a version rule (we recommend **Up to Next Major** from the latest release) and add the `VRTX` library to your target.
+4. Repeat for `https://github.com/talsec/Free-RASP-iOS` with the rule **Exact Version** `6.14.5`, and add the `TalsecRuntime` library to the same target. See [Security runtime dependencies](#security-runtime-dependencies).
 
 ### Swift Package Manager
 
 ```swift
 dependencies: [
     .package(url: "https://github.com/vrtx-fintech/vrtx-ios", from: "0.1.15"),
-    .package(url: "https://github.com/devicekit/DeviceKit", exact: "5.7.0"),
     .package(url: "https://github.com/talsec/Free-RASP-iOS", exact: "6.14.5")
 ],
 targets: [
@@ -31,7 +31,6 @@ targets: [
         name: "YourApp",
         dependencies: [
             .product(name: "VRTX", package: "vrtx-ios"),
-            .product(name: "DeviceKit", package: "DeviceKit"),
             .product(name: "TalsecRuntime", package: "Free-RASP-iOS")
         ]
     )
@@ -41,16 +40,22 @@ targets: [
 ### Security runtime dependencies
 
 `VRTX` includes runtime integrity protection powered by Talsec freeRASP.
-`VRTX.framework` links `TalsecRuntime` dynamically and exposes both
-`TalsecRuntime` and `DeviceKit` in its public Swift interface, so both must be
-resolvable in your project.
+`VRTX.framework` links `TalsecRuntime` dynamically and exposes it in its public
+Swift interface, so it must be resolvable in your project.
 
 Because `VRTX` ships as an XCFramework, **Swift Package Manager cannot express
-these dependencies transitively** — a binary target has no dependency list. The
-SwiftPM snippet above therefore declares them explicitly, and you must keep the
-pinned versions as shown: `DeviceKit` `5.7.0` and `Free-RASP-iOS` `6.14.5` are
-the exact versions `VRTX` is compiled against, and a different version of either
-is a build error rather than a soft incompatibility.
+this dependency transitively** — a binary target has no dependency list. The
+SwiftPM snippet above therefore declares it explicitly, and you must keep the
+pinned version as shown: `Free-RASP-iOS` `6.14.5` is the exact version `VRTX` is
+compiled against, and a different version is a build error rather than a soft
+incompatibility. Without it, the app fails at launch on the missing
+`TalsecRuntime.framework`.
+
+Since 0.1.15, `DeviceKit` is built into `VRTX.framework` and is no longer part of
+its public interface. **Do not add `DeviceKit` to your app**, and if you are
+upgrading from an earlier version, remove it: a second copy loads the same
+classes twice, and the runtime warns that this "may cause spurious casting
+failures and mysterious crashes".
 
 CocoaPods needs no such step — see below.
 
@@ -68,9 +73,9 @@ end
 
 Then run `pod install` and open the generated `.xcworkspace`.
 
-`TalsecRuntime.xcframework` is bundled inside the pod and `DeviceKit` is
-declared as a pod dependency, so both arrive automatically. freeRASP is
-MIT-licensed and its notice ships in the pod as `TalsecRuntime-LICENSE.txt`.
+`TalsecRuntime.xcframework` is bundled inside the pod, so it arrives
+automatically. freeRASP is MIT-licensed and its notice ships in the pod as
+`TalsecRuntime-LICENSE.txt`.
 
 > **CocoaPods requires 0.1.4 or later.** Earlier pod versions declared no
 > dependencies, so neither `DeviceKit` nor `TalsecRuntime` was available:
