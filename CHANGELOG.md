@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.16] - 2026-10-01
+
+SDK release - 2026-10-01
+
 ## [0.1.15] - 2026-09-28
 
 - Bump the packaged VRTX SDK to 0.1.15.
