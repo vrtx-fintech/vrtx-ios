@@ -8,4 +8,4 @@ xcuserdata/
 *.xcodeproj/project.xcworkspace/xcuserdata/
 
 
-.codegraph
+.codegraph.gitignore
