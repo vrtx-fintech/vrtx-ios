@@ -3,11 +3,9 @@
 .swiftpm/
 Package.resolved
 xcuserdata/
-temp_auto_push.bat
 *.xcworkspace/xcuserdata/
 *.xcodeproj/xcuserdata/
 *.xcodeproj/project.xcworkspace/xcuserdata/
 
 
 .codegraph.gitignore
-branch_structure.json
