@@ -2,10 +2,7 @@
 .build/
 .swiftpm/
 Package.resolved
-temp_auto_push.bat
 xcuserdata/
 *.xcworkspace/xcuserdata/
 *.xcodeproj/xcuserdata/
 *.xcodeproj/project.xcworkspace/xcuserdata/
-.gitignore
-branch_structure.json
