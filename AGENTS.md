@@ -48,7 +48,7 @@ and [Swift error handling](https://docs.swift.org/swift-book/documentation/the-s
   findings, weaken gates or extend a security baseline to make a PR green.
 - Preserve PCI DSS 4.0.1 and applicable SAMA controls: least privilege, secure
   transport, secret management, validated inputs, redacted audit logs and approved
-  data residency/retention. Never put PAN, PIN, CVV, tokens or private keys in
+  data residency/retention. Never put real PAN, PIN, CVV, tokens or private keys in
   code, fixtures, logs or prompts. Compliance claims require scoped, reviewed
   evidence; documentation or passing scanners alone do not establish compliance.
 - Use existing Makefile targets or documented commands and the committed package
